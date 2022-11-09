@@ -1,45 +1,43 @@
-const { User, Thought } = require('../models');
+const { thought, user } = require('../models');
 
-module.exports = {
-    // Get all users
-    getUsers(req, res) {
-      User.find()
-        .then((users) => res.json(users))
+const thoughtController = {
+    // Get all thoughts
+    getAllThoughts(req, res) {
+      Thought.find()
+        .then((courses) => res.json(courses))
         .catch((err) => res.status(500).json(err));
     },
-
-
- // Get a single user
- getSingleUser(req, res) {
-    User.findOne({ _id: req.params.userId })
-      .populate({ path: 'thought', select: '-__v' })
-      .populate({ path: 'friend', select: '-__v' })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: 'No user found with that ID' })
-          : res.json(post)
-      )
-      .catch((err) => res.status(500).json(err));
-  },
-
-
-   // create a new user
-   createUser(req, res) {
-    User.create(req.body)
-      .then((user) => res.json(user))
-      .catch((err) => res.status(500).json(err));
-   }
-
-       // Delete a user and associated apps
-  deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: 'No user with that ID' })
-          : Thought.deleteMany({ _id: { $in: user.thought } })
-      )
-      .then(() => res.json({ message: 'User and associated thoughts deleted!' }))
-      .catch((err) => res.status(500).json(err));
-  },
-
+    // Get a thought
+    getSingleThought(req, res) {
+      Thought.findOne({ _id: req.params.courseId })
+      .populate({ path: 'reactions', select: '-__v' })
+        .select('-__v')
+        .then((Thought) =>
+          !thought
+            ? res.status(404).json({ message: 'No thought found with that ID' })
+            : res.json(course)
+        )
+        .catch((err) => res.status(500).json(err));
+    },
+    // Create a thought
+    createThought(req, res) {
+      Thought.create(req.body)
+        .then((Thought) => res.json(Thought))
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
+    },
+    // Delete a thought
+    deleteThought(req, res) {
+      Thought.findOneAndDelete({ _id: req.params.courseId })
+        .then((Thought) =>
+          !Thought
+            ? res.status(404).json({ message: 'No thought founnd with that ID' })
+        )
+        .then(() => res.json({ message: ' Thoughts have been deleted!' }))
+        .catch((err) => res.status(500).json(err));
+    },
 };
+module.exports = thoughtController
+  
