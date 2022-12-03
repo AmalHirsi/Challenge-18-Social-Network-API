@@ -1,9 +1,9 @@
-const { Schema, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
 //const userSchema = require('./user');
 
 const userSchema = new Schema(
     {
-        userName: {
+        username: {
             type: String,
             unique: true,
             required: true,
@@ -19,37 +19,32 @@ const userSchema = new Schema(
             trim: true,
             match: /.+\@.+\..+/,
           },
-         thought: [
+         thoughts: [
             {
             type: Schema.Types.ObjectId,
-            ref: "thought",
+            ref: "Thought",
             }
          ],
          friends: [
             {
-            ref: "user",
+             type: Schema.Types.ObjectId,
+            ref: "User",
             }
          ],
-            toJSON: {
-              virtuals: true,
-            },
             id: false,
           }        
-
     );
 
-    // Create a virtual property `tagCount` that gets the amount of comments per user
 userSchema
 .virtual('friendCount')
 // Getter
 .get(function () {
-  return this.tags.length;
+  return this.friends.length;
 });
 
-// Initialize our Post model
-const User = model('post', userSchema);
 
-module.exports = Post;
+const User = model('User', userSchema);
 
-    module.exports = userSchema;
+
+    module.exports = User;
     
