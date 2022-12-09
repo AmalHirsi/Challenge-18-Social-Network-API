@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/socialsDb', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://0.0.0.0:27017/socialsDb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -8,8 +8,5 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/socialsDb
 //mongoose.set('debug', true);
 
 module.exports = mongoose.connection;
-
-
-
 
 
